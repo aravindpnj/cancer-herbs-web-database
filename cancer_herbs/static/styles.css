@@ -1,0 +1,196 @@
+/* body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: #ffffff;
+    padding: 10px 0;
+    margin-bottom: 15px;
+}
+
+header h1 {
+    margin: 0;
+    padding: 0 20px;
+    text-transform: capitalize;
+    display: inline-block;
+}
+
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+}
+
+h2, h3, h4, h5, h6 {
+    color: #2AAA8A;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+.plant-info {
+    margin-bottom: 20px;
+}
+
+.chemical-box {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.chemical-box h4 {
+    margin-top: 0;
+}
+
+.chemical-box ul {
+    margin: 0;
+    padding: 0;
+}
+
+.chemical-box li {
+    border: none;
+    padding: 5px 0;
+}
+
+.pagination {
+    margin: 20px 0;
+}
+
+.step-links {
+    display: flex;
+    justify-content: center;
+}
+
+.step-links a {
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+.step-links .current {
+    margin: 0 5px;
+} */
+
+
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px 0;
+    text-align: center;
+}
+header h1 {
+    font-size: 2rem;
+}
+
+/* Main Content Area */
+main {
+    padding: 20px;
+    background-color: #ffffff;
+}
+h2, h3, h4, h5, h6 {
+    color: #2980b9;
+    margin-bottom: 20px;
+}
+
+/* Card Layout for Listings */
+.card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+.card:hover {
+    box-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+}
+
+/* Interactive Elements */
+a {
+    color: #2980b9;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+a:hover {
+    color: #1a5276;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    main {
+        padding: 10px;
+    }
+}
+
+/* Placeholder for Footer & Navigation */
+footer {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+}
+nav li {
+    margin: 0 15px;
+}
+
+/* Chemical Details */
+.chemical-details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.chemical-details .found-in, .chemical-details .similar-drugs {
+    flex: 0 0 calc(50% - 20px);
+    box-sizing: border-box;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* On smaller screens, let these elements take the full width */
+@media screen and (max-width: 768px) {
+    .chemical-details .found-in, .chemical-details .similar-drugs {
+        flex: 0 0 100%;
+    }
+}

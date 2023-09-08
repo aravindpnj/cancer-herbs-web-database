@@ -1,0 +1,44 @@
+{% extends 'herbs/base.html' %}
+
+{% block content %}
+    <h1>{{ chemical.chemical_id }}</h1> <!-- Displaying the Chemical ID as the title -->
+
+    <!-- Separate card for InChI Value -->
+    <div class="card">
+        <h3>InChI Value:</h3>
+        <p>{{ chemical.inchi_value }}</p>
+    </div>
+
+    <!-- Section for Plants -->
+    <div class="card">
+        <h2>Found in:</h2>
+        <ul>
+        {% for plant in plants %}
+            <li>{{ plant.taxonomy }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Section for Similar Drugs -->
+    <div class="card">
+        <h2>Similar Drugs:</h2>
+        <table class="drugs-table"> <!-- Adding a class for better styling -->
+            <thead>
+                <tr>
+                    <th>Drug ID</th>
+                    <th>Tanimoto Coefficient</th>
+                    <th>Target Gene ID</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for drug in similar_drugs %}
+                <tr>
+                    <td>{{ drug.drug_chembl_id }}</td>
+                    <td>{{ drug.tanimoto_similarity }}</td>
+                    <td>{{ drug.target_gene_id }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

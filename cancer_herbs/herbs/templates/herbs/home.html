@@ -1,0 +1,39 @@
+{% extends 'herbs/base.html' %}
+
+{% block content %}
+    <!-- Search Bar Section -->
+    <div class="search-bar">
+        <form method="GET" action="{% url 'herbs:home' %}">
+            <input class="search-input" type="text" name="q" value="{{ request.GET.q }}">
+            <input class="search-button" type="submit" value="Search">
+        </form>
+    </div>
+
+    <!-- Plant Listings -->
+    <ul class="plant-list">
+        {% for plant in page_obj %}
+            <li class="plant-item">
+                <a href="{% url 'herbs:report' plant.plant_id %}">{{ plant.taxonomy }}</a>
+            </li>
+        {% empty %}
+            <li>No plants found.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a class="pagination-link" href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a class="pagination-link" href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>    
+{% endblock %}
