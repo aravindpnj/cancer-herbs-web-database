@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>NTU CBI Cancer Herbs Database</title>
+    <title>Cancer Herbs Database</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'herbs/styles2.css' %}">
 </head>
 <body>
     <header>
-        <h1>Cancer Herbs Database</h1>
+        <h1><a href="{% url 'herbs:home' %}">Cancer Herbs Database</a></h1>
     </header>
     <main>
         {% block content %}

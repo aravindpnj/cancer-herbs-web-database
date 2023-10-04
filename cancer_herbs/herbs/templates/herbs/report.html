@@ -3,8 +3,8 @@
 {% block content %}
     <div class="plant-info">
         <h2>{{ plant.taxonomy }}</h2>
-        <p>NCBI Species ID: {% if plant.ncbi_species_id %}{{ plant.ncbi_species_id }}{% else %}Not available{% endif %}</p>
-        <p>NCBI Subspecies ID: {% if plant.ncbi_subspecies_id %}{{ plant.ncbi_subspecies_id }}{% else %}Not available{% endif %}</p>
+        <p>NCBI Species ID: <a href="https://www.ncbi.nlm.nih.gov/taxonomy/?term={{plant.ncbi_species_id}}" target="_blank">{% if plant.ncbi_species_id %}{{ plant.ncbi_species_id }}{% else %}Not available{% endif %}</a></li>
+        <p>NCBI Subspecies ID: <a href="https://www.ncbi.nlm.nih.gov/taxonomy/?term={{plant.ncbi_subspecies_id}}" target="_blank">{% if plant.ncbi_subspecies_id %}{{ plant.ncbi_subspecies_id }}{% else %}Not available{% endif %}</a></li>
     </div>
     <h3>Chemicals:</h3>
     {% for xref in xrefs %}
@@ -16,8 +16,10 @@
             </h4>
             <ul>
                 <li>{% if xref.chemical_id.inchi_value %}{{ xref.chemical_id.inchi_value }}{% else %}Not available{% endif %}</li>
-                <li>PubChem CID: {% if xref.chemical_id.pubchem_cid %}{{ xref.chemical_id.pubchem_cid }}{% else %}Not available{% endif %}</li>
+                <li>PubChem CID: <a href="https://pubchem.ncbi.nlm.nih.gov/#query={{xref.chemical_id.pubchem_cid}}" target="_blank">{% if xref.chemical_id.pubchem_cid %}{{ xref.chemical_id.pubchem_cid }}{% else %}Not available{% endif %}</a></li>
+                <li>ChEMBL ID: <a href="https://www.ebi.ac.uk/chembl/compound_report_card/{{xref.chemical_id.chembl_id}}" target="_blank">{% if xref.chemical_id.chembl_id %}{{ xref.chemical_id.chembl_id }}{% else %}Not available{% endif %}</a></li>
                 <li>Reference DOI: <a href="https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q={{ xref.referenceCleanedDoi }}" target="_blank">{% if xref.referenceCleanedDoi %}{{ xref.referenceCleanedDoi }}{% else %}Not available{% endif %}</a></li>
+
             </ul>
         </div>
     {% empty %}

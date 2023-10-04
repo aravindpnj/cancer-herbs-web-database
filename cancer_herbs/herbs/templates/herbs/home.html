@@ -1,13 +1,16 @@
 {% extends 'herbs/base.html' %}
 
 {% block content %}
-    <!-- Search Bar Section -->
+    <!-- Search Bar -->
     <div class="search-bar">
         <form method="GET" action="{% url 'herbs:home' %}">
             <input class="search-input" type="text" name="q" value="{{ request.GET.q }}">
             <input class="search-button" type="submit" value="Search">
         </form>
     </div>
+
+
+    
 
     <!-- Plant Listings -->
     <ul class="plant-list">

@@ -41,6 +41,33 @@ class HomePageView(ListView):
                 ).distinct()
         return Plant.objects.all().order_by('plant_id')
 
+# def get_queryset(self):
+#     query = self.request.GET.get('q')
+#     search_type = self.request.GET.get('search_type', 'plant')  # default to 'plant' if not provided
+
+#     print(f"Search Type: {search_type}")  # Debug print
+#     print(f"Query: {query}")  # Debug print
+
+#     if search_type == 'plant':
+#         return Plant.objects.filter(
+#             Q(taxonomy__icontains=query) |
+#             Q(ncbi_species_id__icontains=query) |
+#             Q(ncbi_subspecies_id__icontains=query)
+#         )
+
+#     elif search_type == 'chemical':
+#         return Chemical.objects.filter(
+#             Q(inchi_value__icontains=query) |
+#             Q(pubchem_cid__icontains=query) |
+#             Q(chembl_id__icontains=query)
+#         )
+
+#     plant_ids = XRef.objects.filter(chemical_id__in=matching_chemicals).values_list('plant_id', flat=True)
+#     return Plant.objects.filter(plant_id__in=plant_ids)
+
+#     # Default to showing all plants if no match
+#     return Plant.objects.all()
+
 
 class PlantDetailView(DetailView):
     model = Plant
@@ -96,7 +123,7 @@ class ChemicalDetailView(DetailView):
         plants = list(set([xref.plant_id for xref in xrefs]))  # Using set to ensure distinct plants
 
         # Fetch similar drugs
-        similar_drugs = Drug.objects.filter(chemical_id=chemical_id)
+        similar_drugs = Drug.objects.filter(chemical_id=chemical_id).order_by('-tanimoto_similarity')
 
         context['plants'] = plants
         context['similar_drugs'] = similar_drugs

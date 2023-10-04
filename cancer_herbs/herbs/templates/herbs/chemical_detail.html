@@ -1,7 +1,7 @@
 {% extends 'herbs/base.html' %}
 
 {% block content %}
-    <h1>{{ chemical.chemical_id }}</h1> <!-- Displaying the Chemical ID as the title -->
+    <h1>Chemical ID: {{ chemical.chemical_id }}</h1> <!-- Displaying the Chemical ID as the title -->
 
     <!-- Separate card for InChI Value -->
     <div class="card">
@@ -14,7 +14,8 @@
         <h2>Found in:</h2>
         <ul>
         {% for plant in plants %}
-            <li>{{ plant.taxonomy }}</li>
+            <li><a href="{% url 'herbs:report' plant.plant_id %}">{{ plant.taxonomy }}</a></li>
+
         {% endfor %}
         </ul>
     </div>
@@ -27,15 +28,15 @@
                 <tr>
                     <th>Drug ID</th>
                     <th>Tanimoto Coefficient</th>
-                    <th>Target Gene ID</th>
+                    <th>Target Gene Name</th>
                 </tr>
             </thead>
             <tbody>
             {% for drug in similar_drugs %}
                 <tr>
-                    <td>{{ drug.drug_chembl_id }}</td>
+                    <td><a href="https://www.ebi.ac.uk/chembl/compound_report_card/{{ drug.drug_chembl_id }}/" target="_blank">{{ drug.drug_chembl_id }}</a></td>
                     <td>{{ drug.tanimoto_similarity }}</td>
-                    <td>{{ drug.target_gene_id }}</td>
+                    <td><a href="https://www.ebi.ac.uk/chembl/target_report_card/{{ drug.target_chembl_id }}/" target="_blank">{{ drug.target_gene_id }}</a></td>                    
                 </tr>
             {% endfor %}
             </tbody>
