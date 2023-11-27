@@ -118,6 +118,9 @@ mysql -u root -p cancer_herbs_database < cancer_herbs.sql
 
 
 
+docker cp "/Users/aravind/Desktop/URECA/121documents/targets.txt" mysql-container:/var/lib/mysql-files/
+
+
 
 #Create SQL Table
 
@@ -294,3 +297,28 @@ IGNORE 1 ROWS
 
 
 
+LOAD DATA INFILE '/var/lib/mysql-files/targets.txt'
+INTO TABLE Targets
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(
+    target_gene_id,
+    target_synonyms,
+    target_description,
+    target_other_designations,
+    target_ncbi_id,
+    target_entrez_url,
+    target_ensembl_id,
+    target_ensembl_url,
+    target_chembl_id,
+    target_chembl_url,
+    target_uniprot_id,
+    target_cbioportal_url,
+    target_ncigenomics_url,
+    target_ncitargetdiscovery_url,
+    target_cosmic_url,
+    target_cancergeneticsweb_url,
+    target_depmap_url,
+    target_cansar_url
+);
