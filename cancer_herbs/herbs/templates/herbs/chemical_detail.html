@@ -7,6 +7,12 @@
     <div class="card">
         <h3>InChI Value:</h3>
         <p>{{ chemical.inchi_value }}</p>
+        
+        {% if chemical.chembl_id %}
+            <h3>ChEMBL ID:</h3>
+            <p>{{ chemical.chembl_id }}</p>
+        {% endif %}
+    
     </div>
 
     <!-- Section for Plants -->

@@ -4,13 +4,23 @@
     <!-- Search Bar -->
     <div class="search-bar">
         <form method="GET" action="{% url 'herbs:home' %}">
-            <input class="search-input" type="text" name="q" value="{{ request.GET.q }}">
+            <!-- Dropdown for selecting Plant or Chemical -->
+            <select id="searchType" name="search_type" onchange="updateFieldsDropdown()">
+                <option value="Plant">Plant</option>
+                <option value="Chemical">Chemical</option>
+            </select>
+
+            <!-- Dropdown for selecting the specific search field -->
+            <select id="searchField" name="search_field">
+            <option value="ncbi_species_id">NCBI ID</option>
+            <option value="taxonomy">Taxonomy</option>
+            </select>
+            
+            <!-- Search Input -->
+            <input id="searchInput" class="search-input" type="text" name="q" value="{{ request.GET.q }}">
             <input class="search-button" type="submit" value="Search">
         </form>
     </div>
-
-
-    
 
     <!-- Plant Listings -->
     <ul class="plant-list">
@@ -23,20 +33,63 @@
         {% endfor %}
     </ul>
 
+
     <!-- Pagination -->
     <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a class="pagination-link" href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
+        <!-- Previous Range Button -->
+        {% if page_obj.number > 10 %}
+            <a href="?page={{ page_obj.number|add:"-1" }}"><<</a>
+        {% endif %}
+        
+        <!-- Individual Page Numbers -->
+        {% for page_num in page_range %}
+            <a href="?page={{ page_num }}"
+               class="{% if page_num == page_obj.number %}current{% endif %}">
+                {{ page_num }}
+            </a>
+        {% endfor %}
+        
+        <!-- Next Range Button -->
+        {% if page_obj.number <= paginator.num_pages|add:"-9" %}
+            <a href="?page={{ page_obj.number|add:"1" }}">>></a>
+        {% endif %}
+    </div>
     
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-    
-            {% if page_obj.has_next %}
-                <a class="pagination-link" href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">next</a>
-            {% endif %}
-        </span>
-    </div>    
+
+    <!-- JavaScript to Update Fields Dropdown -->
+    <script>
+        function updateFieldsDropdown() {
+            var searchType = document.getElementById("searchType").value;
+            var searchField = document.getElementById("searchField");
+            searchField.innerHTML = "";  // Clear existing options
+
+            if (searchType === "Plant") {
+                var options = ["ncbi_species_id", "taxonomy"];
+            } else {
+                var options = ["inchi_value", "pubchem_cid"];
+            }
+
+            for (var i = 0; i < options.length; i++) {
+                var opt = options[i];
+                var el = document.createElement("option");
+                el.textContent = opt;
+                el.value = opt;
+                searchField.appendChild(el);
+            }
+        }
+
+        // Initialize the fields dropdown
+        window.onload = function() {
+            updateFieldsDropdown();
+        };
+    </script>
 {% endblock %}
+
+
+
+
+
+
+
+
+

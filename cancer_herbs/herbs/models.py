@@ -40,3 +40,22 @@ class Drug(models.Model):
     target_gene_id = models.CharField(max_length=100, null=True)
 
 
+class Target(models.Model):
+    target_gene_id = models.CharField(max_length=255, primary_key=True)
+    target_synonyms = models.TextField(null=True)
+    target_description = models.TextField(null=True)
+    target_other_designations = models.TextField(null=True)
+    target_ncbi_id = models.CharField(max_length=100, null=True)
+    target_entrez_url = models.URLField(null=True)
+    target_ensembl_id = models.CharField(max_length=100, null=True)
+    target_ensembl_url = models.URLField(null=True)
+    target_chembl_id = models.CharField(max_length=100, null=True)
+    target_chembl_url = models.URLField(null=True)
+    target_uniprot_id = models.CharField(max_length=100, null=True)
+    target_cbioportal_url = models.URLField(null=True)
+    target_ncigenomics_url = models.URLField(null=True)
+    target_ncitargetdiscovery_url = models.URLField(null=True)
+    target_cosmic_url = models.URLField(null=True)
+    target_cancergeneticsweb_url = models.URLField(null=True)
+    target_depmap_url = models.URLField(null=True)
+    target_cansar_url = models.URLField(null=True)

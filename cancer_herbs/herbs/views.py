@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -14,59 +14,70 @@ class HomePageView(ListView):
 
     paginate_by = 30  # <--- specify the number of items per page
 
+
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.get('q')
+        search_type = self.request.GET.get('search_type')
+        search_field = self.request.GET.get('search_field')
+        
+        if search_type == 'Chemical' and search_field in ['inchi_value', 'pubchem_cid']:
+            chemical = Chemical.objects.filter(**{search_field: query}).first()
+            if chemical:
+                return redirect('herbs:chemical_detail', chemical_id=chemical.chemical_id)
+        
+        return super().get(request, *args, **kwargs)
+
+
+
     def get_queryset(self):
         query = self.request.GET.get('q')
-        if query:
-            if '=' in query:
-                parts = query.split('=', 1)  # split only once
-                identifier = parts[0].strip()
-                value = parts[1].strip()
-                if identifier == 'ncbi_species_id':
-                    return Plant.objects.filter(ncbi_species_id__icontains=value)
-                elif identifier == 'ncbi_subspecies_id':
-                    return Plant.objects.filter(ncbi_subspecies_id__icontains=value)
-                elif identifier == 'inchi_value':
-                    return Plant.objects.filter(xrefs__chemical_id__inchi_value__icontains=value).distinct()
-                elif identifier == 'pubchem_cid':
-                    return Plant.objects.filter(xrefs__chemical_id__pubchem_cid__icontains=value).distinct()
-                elif identifier == 'taxonomy':
-                    return Plant.objects.filter(taxonomy__icontains=value)
-            else:
-                return Plant.objects.filter(
-                    Q(ncbi_species_id__icontains=query) |
-                    Q(ncbi_subspecies_id__icontains=query) |
-                    Q(taxonomy__icontains=query) |
-                    Q(xrefs__chemical_id__inchi_value__icontains=query) |
-                    Q(xrefs__chemical_id__pubchem_cid__icontains=query)
-                ).distinct()
-        return Plant.objects.all().order_by('plant_id')
+        search_type = self.request.GET.get('search_type')
+        search_field = self.request.GET.get('search_field')
 
-# def get_queryset(self):
-#     query = self.request.GET.get('q')
-#     search_type = self.request.GET.get('search_type', 'plant')  # default to 'plant' if not provided
+        if search_type and search_field:
+            if search_type == 'Plant':
+                if search_field == 'ncbi_species_id':
+                    return Plant.objects.filter(
+                        Q(ncbi_species_id__icontains=query) | 
+                        Q(ncbi_subspecies_id__icontains=query)
+                    )
+                elif search_field == 'taxonomy':
+                    return Plant.objects.filter(taxonomy__icontains=query)
+            
+            # If the user selects an invalid combination, show no results
+            return Plant.objects.none()
 
-#     print(f"Search Type: {search_type}")  # Debug print
-#     print(f"Query: {query}")  # Debug print
+        # If we reach here, no search parameters were provided
+        # Returning all plants as a default behavior
+        return Plant.objects.all()
 
-#     if search_type == 'plant':
-#         return Plant.objects.filter(
-#             Q(taxonomy__icontains=query) |
-#             Q(ncbi_species_id__icontains=query) |
-#             Q(ncbi_subspecies_id__icontains=query)
-#         )
 
-#     elif search_type == 'chemical':
-#         return Chemical.objects.filter(
-#             Q(inchi_value__icontains=query) |
-#             Q(pubchem_cid__icontains=query) |
-#             Q(chembl_id__icontains=query)
-#         )
 
-#     plant_ids = XRef.objects.filter(chemical_id__in=matching_chemicals).values_list('plant_id', flat=True)
-#     return Plant.objects.filter(plant_id__in=plant_ids)
 
-#     # Default to showing all plants if no match
-#     return Plant.objects.all()
+
+
+    
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        
+        # Get the current page number from the paginator
+        page = context['page_obj'].number
+
+        # Calculate the start and end pages for the fixed range
+        start_page = ((page - 1) // 10) * 10 + 1
+        end_page = start_page + 9
+
+        # Ensure end_page doesn't exceed the maximum number of pages
+        end_page = min(end_page, context['paginator'].num_pages)
+        
+        # Create the range of page numbers
+        context['page_range'] = range(start_page, end_page + 1)
+        
+        return context
+
+
 
 
 class PlantDetailView(DetailView):
